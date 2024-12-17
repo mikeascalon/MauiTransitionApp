@@ -24,11 +24,12 @@ namespace TransitionApp.ViewModel
             _taskService = taskService;
         }
 
-        public async void LoadTasks()
+        // Load tasks based on the selected template
+        public void LoadTasks(TaskTemplateType templateType)
         {
-            var etsTasks = _taskService.GetTasksForTemplate(TaskTemplateType.ETS);
+            var templateTasks = _taskService.GetTasksForTemplate(templateType);
             Tasks.Clear();
-            foreach (var task in etsTasks)
+            foreach (var task in templateTasks)
             {
                 Tasks.Add(task);
             }

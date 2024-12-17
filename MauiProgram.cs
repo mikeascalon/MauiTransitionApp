@@ -33,6 +33,7 @@ namespace TransitionApp
             builder.Services.AddScoped<TaskService>(); // Task service for CRUD operations
             builder.Services.AddSingleton<TaskViewModel>();  // ViewModel for TaskPage
             builder.Services.AddTransient<TaskPage>();   // Register TaskPage
+            builder.Services.AddScoped<TaskTemplateService>();
 
             // Automatically apply migrations
             try
