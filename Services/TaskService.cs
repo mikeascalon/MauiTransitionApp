@@ -18,6 +18,25 @@ namespace TransitionApp.Services
             _context = context;
         }
 
+        // Retrieve tasks based on the selected template type
+        public List<UserTask> GetTasksForTemplate(TaskTemplateType templateType)
+        {
+            // Query TaskTemplates to filter tasks based on template type
+            var templateTasks = _context.TaskTemplates
+                .Where(t => t.TemplateType == templateType)
+                .Select(t => new UserTask
+                {
+                    TaskName = t.Name,
+                    CreatedAt = System.DateTime.UtcNow,
+                    UpdatedAt = System.DateTime.UtcNow,
+                    IsDone = false,
+                    MonthsLeft = t.MonthsLeft ?? 0
+                })
+                .ToList();
+
+            return templateTasks;
+        }
+
         // Get all tasks for a specific user
         public async Task<List<UserTask>> GetTasksByUserAsync(int userId)
         {
@@ -70,6 +89,14 @@ namespace TransitionApp.Services
         public async Task<List<TaskTemplate>> GetAllTemplatesAsync()
         {
             return await _context.TaskTemplates.OrderBy(t => t.Order).ToListAsync();
+        }
+
+        // Retrieve all tasks for a specific user
+        public async Task<List<UserTask>> GetTasksForUserAsync(int userId)
+        {
+            return await _context.Tasks
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
         }
     }
 }

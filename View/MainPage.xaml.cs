@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 using TransitionApp.Services;
+using TransitionApp.Models;
 
 namespace TransitionApp.View
 {
@@ -21,16 +22,15 @@ namespace TransitionApp.View
             string password = PasswordEntry.Text;
 
             // Authenticate user
-            bool isAuthenticated = _authService.Authenticate(username, password);
+            var user = _authService.Authenticate(username, password);
 
-            if (isAuthenticated)
+            if (user != null)
             {
-                // Navigate to TaskPage after successful login
-                await Shell.Current.GoToAsync("//TaskPage");
+                // Pass userId and template type as query parameters
+                await Shell.Current.GoToAsync($"TaskPage?userId={user.UserId}&templateType={user.TaskTemplate}");
             }
             else
             {
-                // Show error message
                 ErrorMessage.Text = "Invalid username or password.";
                 ErrorMessage.IsVisible = true;
             }

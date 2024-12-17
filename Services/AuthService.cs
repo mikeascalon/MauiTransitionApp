@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TransitionApp.Data;
+using TransitionApp.Models;
 
 namespace TransitionApp.Services
 {
@@ -16,12 +17,11 @@ namespace TransitionApp.Services
             _context = context;
         }
 
-        public bool Authenticate(string username, string password)
+        public User Authenticate(string username, string password)
         {
-            // Retrieve user and compare plain text password
-            var user = _context.Users.FirstOrDefault(u => u.Username == username);
-            return user != null && user.PasswordHash == password;
+            return _context.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == password);
         }
-
     }
+
+    
 }
