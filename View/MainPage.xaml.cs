@@ -17,16 +17,14 @@ namespace TransitionApp.View
 
         private async void OnSignInClicked(object sender, EventArgs e)
         {
-            // Retrieve values from Entry fields
             string username = UsernameEntry.Text;
             string password = PasswordEntry.Text;
 
-            // Authenticate user
+            // Authenticate the user
             var user = _authService.Authenticate(username, password);
 
-            if (user != null)
+            if (user != null && user.UserId > 0) // Ensure userId is valid
             {
-                // Pass userId and template type as query parameters
                 await Shell.Current.GoToAsync($"TaskPage?userId={user.UserId}&templateType={user.TaskTemplate}");
             }
             else

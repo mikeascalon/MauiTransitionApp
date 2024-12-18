@@ -59,6 +59,14 @@ namespace TransitionApp.Services
         // Update an existing task
         public async Task UpdateTaskAsync(UserTask task)
         {
+            // Ensure the UserId exists in the database
+            var userExists = await _context.Users.AnyAsync(u => u.UserId == task.UserId);
+            if (!userExists)
+            {
+                throw new InvalidOperationException("User does not exist for the provided UserId.");
+            }
+
+            // Update the task
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
         }

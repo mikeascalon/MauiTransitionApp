@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using TransitionApp.Models;
 using TransitionApp.Services;
 
@@ -17,13 +18,23 @@ namespace TransitionApp.ViewModel
         private readonly TaskService _taskService;
         private int _currentUserId; // Pass the UserId dynamically
         private TaskTemplateType _currentTemplateType;
+        public ICommand UpdateCommand { get; }
+        public ICommand DeleteCommand { get; }
 
         public ObservableCollection<UserTask> Tasks { get; set; } = new ObservableCollection<UserTask>();
 
-        public TaskViewModel(TaskService taskService, int userId)
+        public TaskViewModel(TaskService taskService)
         {
             _taskService = taskService;
-            _currentUserId = userId; // Pass UserId during initialization
+
+            UpdateCommand = new Command<UserTask>(async (task) => await UpdateTask(task));
+            DeleteCommand = new Command<int>(async (taskId) => await DeleteTask(taskId));
+
+        }
+
+        public void SetUserId(int userId)
+        {
+            _currentUserId = userId;
             LoadTasks(TaskTemplateType.ETS); // Default to ETS
         }
 

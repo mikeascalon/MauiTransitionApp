@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:TransitionApp.View"
     
     Shell.FlyoutBehavior="Disabled"
-    >
+    Title="TransitionApp">
 
     <ShellContent
         Title="Sign In"

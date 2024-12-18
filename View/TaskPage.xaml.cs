@@ -16,8 +16,15 @@ public partial class TaskPage : ContentPage
     {
         set
         {
-            _userId = int.Parse(value); // Convert to int
-            _taskViewModel.LoadTasks(TaskTemplateType.ETS); // Load tasks for the user
+            if (int.TryParse(value, out int userId))
+            {
+                _userId = userId;
+                _taskViewModel.SetUserId(userId);
+            }
+            else
+            {
+                Console.WriteLine("Invalid userId passed to TaskPage.");
+            }
         }
     }
 
@@ -45,5 +52,11 @@ public partial class TaskPage : ContentPage
 
         
 
+    }
+
+    public void SetParameters(int userId, TaskTemplateType templateType)
+    {
+        _taskViewModel.SetUserId(userId);
+        _taskViewModel.LoadTasks(templateType);
     }
 }

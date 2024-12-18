@@ -31,7 +31,7 @@ namespace TransitionApp
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<TaskService>(); // Task service for CRUD operations
-            builder.Services.AddSingleton<TaskViewModel>();  // ViewModel for TaskPage
+            builder.Services.AddScoped<TaskViewModel>();  // ViewModel for TaskPage
             builder.Services.AddTransient<TaskPage>();   // Register TaskPage
             builder.Services.AddScoped<TaskTemplateService>();
 
