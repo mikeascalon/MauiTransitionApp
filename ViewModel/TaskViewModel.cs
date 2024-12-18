@@ -39,11 +39,11 @@ namespace TransitionApp.ViewModel
         }
 
         // Load user-specific tasks
-        public void LoadUserTasks(int userId)
+        public async Task LoadUserTasksAsync(int userId)
         {
             _currentUserId = userId;
 
-            var userTasks = _taskService.GetTasksByUserId(userId);
+            var userTasks = await _taskService.GetTasksByUserAsync(userId);
             Tasks.Clear();
 
             foreach (var task in userTasks)
@@ -55,8 +55,8 @@ namespace TransitionApp.ViewModel
         }
 
 
-        // Load tasks based on the selected template
-        public void LoadTasks(TaskTemplateType templateType)
+        // Load tasks from a template
+        public void LoadTemplateTasks(TaskTemplateType templateType)
         {
             _currentTemplateType = templateType;
 
@@ -75,19 +75,25 @@ namespace TransitionApp.ViewModel
         {
             task.UserId = _currentUserId; // Assign current user
             await _taskService.AddTaskAsync(task);
-            LoadTasks(_currentTemplateType);
+
+            // Reload user tasks after adding
+            await LoadUserTasksAsync(_currentUserId);
         }
 
         public async Task UpdateTask(UserTask task)
         {
             await _taskService.UpdateTaskAsync(task);
-            LoadTasks(_currentTemplateType);
+
+            // Reload user tasks after updating
+            await LoadUserTasksAsync(_currentUserId);
         }
 
         public async Task DeleteTask(int taskId)
         {
             await _taskService.DeleteTaskAsync(taskId);
-            LoadTasks(_currentTemplateType); 
+
+            // Reload user tasks after deletion
+            await LoadUserTasksAsync(_currentUserId);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -16,17 +16,13 @@ public partial class TaskPage : ContentPage
     {
         set
         {
-            if (int.TryParse(value, out int userId))
+            if (int.TryParse(value, out int parsedUserId))
             {
-                _userId = userId;
-                _taskViewModel.SetUserId(userId);
-            }
-            else
-            {
-                Console.WriteLine("Invalid userId passed to TaskPage.");
+                _ = _taskViewModel.LoadUserTasksAsync(parsedUserId);
             }
         }
     }
+
 
     public string TemplateType
     {
