@@ -40,7 +40,12 @@ namespace TransitionApp.Services
         // Get all tasks for a specific user
         public async Task<List<UserTask>> GetTasksByUserAsync(int userId)
         {
-            return await _context.Tasks.Where(t => t.UserId == userId).ToListAsync();
+            Console.WriteLine($"Fetching tasks for UserId: {userId}");
+
+            var tasks = await _context.Tasks.Where(t => t.UserId == userId).ToListAsync();
+
+            Console.WriteLine($"Tasks fetched: {tasks.Count}");
+            return tasks;
         }
 
         // Get a specific task by ID

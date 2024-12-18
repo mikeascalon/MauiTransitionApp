@@ -25,13 +25,19 @@ namespace TransitionApp.View
 
             if (user != null && user.UserId > 0) // Ensure userId is valid
             {
-                await Shell.Current.GoToAsync($"TaskPage?userId={user.UserId}&templateType={user.TaskTemplate}");
+                // Navigate to TaskPage with only userId for existing user tasks
+                await Shell.Current.GoToAsync($"TaskPage?userId={user.UserId}");
             }
             else
             {
                 ErrorMessage.Text = "Invalid username or password.";
                 ErrorMessage.IsVisible = true;
             }
+        }
+
+        private async void OnSignUpClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(SignUpPage));
         }
     }
 

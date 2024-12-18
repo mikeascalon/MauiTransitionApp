@@ -32,10 +32,10 @@ namespace TransitionApp.ViewModel
 
         }
 
-        public void SetUserId(int userId)
+        public async Task SetUserId(int userId)
         {
             _currentUserId = userId;
-            LoadTasks(TaskTemplateType.ETS); // Default to ETS
+            await LoadUserTasksAsync(userId);
         }
 
         // Load user-specific tasks

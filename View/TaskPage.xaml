@@ -6,10 +6,7 @@
              Title="Task Page">
 
 
-    <!-- Page-level BindingContext -->
-    <!--<ContentPage.BindingContext>
-        <vm:TaskViewModel />
-    </ContentPage.BindingContext>-->
+    
 
     <StackLayout Padding="15" Spacing="10" BackgroundColor="#F5F5F5">
 

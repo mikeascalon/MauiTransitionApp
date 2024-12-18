@@ -18,7 +18,7 @@ public partial class TaskPage : ContentPage
         {
             if (int.TryParse(value, out int parsedUserId))
             {
-                _ = _taskViewModel.LoadUserTasksAsync(parsedUserId);
+                _ = _taskViewModel.LoadUserTasksAsync(parsedUserId); // Load user's tasks
             }
         }
     }
@@ -33,7 +33,12 @@ public partial class TaskPage : ContentPage
             // Convert templateType to enum and load tasks
             if (Enum.TryParse<TaskTemplateType>(_templateType, out var taskTemplateType))
             {
-                _taskViewModel.LoadTasks(taskTemplateType);
+                _taskViewModel.LoadTemplateTasks(taskTemplateType);
+            }
+            else
+            {
+                // Handle invalid template type
+                _taskViewModel.LoadTemplateTasks(TaskTemplateType.ETS); // Default template
             }
         }
     }
@@ -50,9 +55,17 @@ public partial class TaskPage : ContentPage
 
     }
 
-    public void SetParameters(int userId, TaskTemplateType templateType)
+    public async Task SetParametersAsync(int userId, TaskTemplateType templateType)
     {
-        _taskViewModel.SetUserId(userId);
-        _taskViewModel.LoadTasks(templateType);
+        if (userId > 0)
+        {
+            // Load user-specific tasks asynchronously
+            await _taskViewModel.LoadUserTasksAsync(userId);
+        }
+        else
+        {
+            // Load tasks from the selected template
+            _taskViewModel.LoadTemplateTasks(templateType);
+        }
     }
 }

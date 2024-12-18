@@ -24,6 +24,21 @@ namespace TransitionApp.Services
                   .Include(u => u.Tasks) // Load tasks associated with the user
                   .FirstOrDefault(u => u.Username == username && u.PasswordHash == password);
         }
+
+        public async Task<bool> RegisterUserAsync(User user)
+        {
+            try
+            {
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error registering user: {ex.Message}");
+                return false;
+            }
+        }
     }
 
     

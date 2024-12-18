@@ -25,6 +25,12 @@
                 BackgroundColor="#007AFF" 
                 TextColor="White" />
 
+        <!-- Sign-Up Button -->
+        <Button Text="Sign Up"
+                Clicked="OnSignUpClicked"
+                BackgroundColor="#34C759"
+                TextColor="White" />
+
         <Label x:Name="ErrorMessage" 
                TextColor="Red" 
                HorizontalOptions="Center" 
