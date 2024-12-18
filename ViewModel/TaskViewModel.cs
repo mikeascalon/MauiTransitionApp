@@ -38,6 +38,22 @@ namespace TransitionApp.ViewModel
             LoadTasks(TaskTemplateType.ETS); // Default to ETS
         }
 
+        // Load user-specific tasks
+        public void LoadUserTasks(int userId)
+        {
+            _currentUserId = userId;
+
+            var userTasks = _taskService.GetTasksByUserId(userId);
+            Tasks.Clear();
+
+            foreach (var task in userTasks)
+            {
+                Tasks.Add(task);
+            }
+
+            OnPropertyChanged(nameof(Tasks));
+        }
+
 
         // Load tasks based on the selected template
         public void LoadTasks(TaskTemplateType templateType)
