@@ -6,69 +6,71 @@
              Title="Task Page">
 
 
+    <ScrollView>
+        <StackLayout Padding="15" Spacing="10" BackgroundColor="#F5F5F5">
+
+            <!-- Header -->
+            <Label Text="Tasks"
+           FontSize="24"
+           FontAttributes="Bold"
+           HorizontalOptions="Center"
+           TextColor="#333333" />
+
+            <!-- Task List -->
+            <CollectionView ItemsSource="{Binding Tasks}" BackgroundColor="White">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="8" Margin="5" Padding="10" BackgroundColor="#FFFFFF" >
+                            <Frame.Shadow>
+                                <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
+                            </Frame.Shadow>
+                            <Grid ColumnDefinitions="2*, Auto, Auto" RowSpacing="5">
+
+                                <!-- Task Name -->
+                                <Entry Text="{Binding TaskName, Mode=TwoWay}"
+                                FontSize="16"
+                                TextColor="#333333"
+                                VerticalOptions="Center"
+                                Grid.Column="0" />
+
+                                <!-- Edit Button -->
+                                <Button Text="Edit"
+                                FontSize="12"
+                                TextColor="White"
+                                BackgroundColor="#007AFF"
+                                CornerRadius="5"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.UpdateCommand}"
+                                CommandParameter="{Binding .}"
+                                HorizontalOptions="End"
+                                Grid.Column="1" />
+
+                                <!-- Delete Button -->
+                                <Button Text="Delete"
+                                FontSize="12"
+                                TextColor="White"
+                                BackgroundColor="#FF3B30"
+                                CornerRadius="5"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
+                                CommandParameter="{Binding TaskId}"
+                                HorizontalOptions="End"
+                                Grid.Column="2" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Add Task Button -->
+            <Button Text="Add Task"
+            FontSize="16"
+            TextColor="White"
+            BackgroundColor="#34C759"
+            CornerRadius="8"
+            Command="{Binding AddCommand}"
+            HorizontalOptions="Center"
+            Padding="10" />
+        </StackLayout>
+    </ScrollView>
+
     
-
-    <StackLayout Padding="15" Spacing="10" BackgroundColor="#F5F5F5">
-
-        <!-- Header -->
-        <Label Text="Tasks"
-               FontSize="24"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               TextColor="#333333" />
-
-        <!-- Task List -->
-        <CollectionView ItemsSource="{Binding Tasks}" BackgroundColor="White">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame CornerRadius="8" Margin="5" Padding="10" BackgroundColor="#FFFFFF" >
-                        <Frame.Shadow>
-                            <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
-                        </Frame.Shadow>
-                        <Grid ColumnDefinitions="2*, Auto, Auto" RowSpacing="5">
-
-                            <!-- Task Name -->
-                            <Label Text="{Binding TaskName}"
-                                   FontSize="16"
-                                   TextColor="#333333"
-                                   VerticalOptions="Center"
-                                   Grid.Column="0" />
-
-                            <!-- Edit Button -->
-                            <Button Text="Edit"
-                                    FontSize="12"
-                                    TextColor="White"
-                                    BackgroundColor="#007AFF"
-                                    CornerRadius="5"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.UpdateCommand}"
-                                    CommandParameter="{Binding .}"
-                                    HorizontalOptions="End"
-                                    Grid.Column="1" />
-
-                            <!-- Delete Button -->
-                            <Button Text="Delete"
-                                    FontSize="12"
-                                    TextColor="White"
-                                    BackgroundColor="#FF3B30"
-                                    CornerRadius="5"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
-                                    CommandParameter="{Binding TaskId}"
-                                    HorizontalOptions="End"
-                                    Grid.Column="2" />
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
-        <!-- Add Task Button -->
-        <Button Text="Add Task"
-                FontSize="16"
-                TextColor="White"
-                BackgroundColor="#34C759"
-                CornerRadius="8"
-                Command="{Binding AddCommand}"
-                HorizontalOptions="Center"
-                Padding="10" />
-    </StackLayout>
 </ContentPage>

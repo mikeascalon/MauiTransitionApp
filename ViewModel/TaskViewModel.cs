@@ -82,9 +82,18 @@ namespace TransitionApp.ViewModel
 
         public async Task UpdateTask(UserTask task)
         {
+            if (task == null)
+            {
+                Console.WriteLine("UpdateTask: Task is null");
+                return;
+            }
+
+            // Debug line
+            Console.WriteLine($"UpdateTask: TaskId = {task.TaskId}, TaskName = {task.TaskName}");
+
             await _taskService.UpdateTaskAsync(task);
 
-            // Reload user tasks after updating
+            // Reload tasks after updating
             await LoadUserTasksAsync(_currentUserId);
         }
 
