@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,11 +15,18 @@ namespace TransitionApp.ViewModel
     {
 
         private readonly AuthService _authService;
+
+        // User input properties
         private string _username;
         private string _password;
         private string _email;
         private TaskTemplateType _selectedTemplate;
 
+        // Expose available templates to bind to Picker
+        public ObservableCollection<TaskTemplateType> Templates { get; }
+
+
+     
         public string Username
         {
             get => _username;
@@ -40,24 +48,44 @@ namespace TransitionApp.ViewModel
         public TaskTemplateType SelectedTemplate
         {
             get => _selectedTemplate;
-            set { _selectedTemplate = value; OnPropertyChanged(); }
+            set
+            {
+                _selectedTemplate = value;
+                OnPropertyChanged();
+            }
         }
+
 
         public SignUpViewModel(AuthService authService)
         {
             _authService = authService;
+
+            // Load enum values into the ObservableCollection
+            Templates = new ObservableCollection<TaskTemplateType>(
+                Enum.GetValues(typeof(TaskTemplateType)).Cast<TaskTemplateType>()
+            );
+
         }
+
+        // Command to handle sign-up logic
 
         public async Task<bool> SignUpAsync()
         {
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            {
+                return false; // Validation failed
+            }
+
+            // Create a new user object
             var newUser = new User
             {
                 Username = Username,
-                PasswordHash = Password, // In real-world apps, hash the password!
+                PasswordHash = Password, // Ideally, hash the password
                 Email = Email,
                 TaskTemplate = SelectedTemplate
             };
 
+            // Use AuthService to save the user
             return await _authService.RegisterUserAsync(newUser);
         }
 

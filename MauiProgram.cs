@@ -34,6 +34,8 @@ namespace TransitionApp
             builder.Services.AddScoped<TaskViewModel>();  // ViewModel for TaskPage
             builder.Services.AddTransient<TaskPage>();   // Register TaskPage
             builder.Services.AddScoped<TaskTemplateService>();
+            builder.Services.AddScoped<SignUpViewModel>();
+            builder.Services.AddTransient<SignUpPage>();
 
             // Automatically apply migrations
             try
