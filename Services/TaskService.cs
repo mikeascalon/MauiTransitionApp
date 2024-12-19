@@ -111,5 +111,12 @@ namespace TransitionApp.Services
                 .Where(t => t.UserId == userId)
                 .ToListAsync();
         }
+
+        public async Task<List<TaskTemplate>> GetTasksForTemplateAsync(TaskTemplateType templateType)
+        {
+            return await _context.TaskTemplates
+                .Where(t => t.TemplateType == templateType)
+                .ToListAsync();
+        }
     }
 }

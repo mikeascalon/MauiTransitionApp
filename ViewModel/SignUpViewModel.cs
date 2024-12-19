@@ -11,40 +11,27 @@ using TransitionApp.Services;
 
 namespace TransitionApp.ViewModel
 {
-    public class SignUpViewModel:INotifyPropertyChanged
+    public class SignUpViewModel: INotifyPropertyChanged
     {
 
-        private readonly AuthService _authService;
+        private readonly AuthService _authService; // Service to handle authentication and user creation
+        private readonly TaskService _taskService; // Service to handle tasks
 
-        // User input properties
-        private string _username;
-        private string _password;
-        private string _email;
-        private TaskTemplateType _selectedTemplate;
+        private TaskTemplateType _selectedTemplate; // Backing field for selected template
 
-        // Expose available templates to bind to Picker
-        public ObservableCollection<TaskTemplateType> Templates { get; }
-
-
-     
-        public string Username
+        public SignUpViewModel(AuthService authService, TaskService taskService)
         {
-            get => _username;
-            set { _username = value; OnPropertyChanged(); }
+            _authService = authService;
+            _taskService = taskService;
+
+            // Initialize TemplateOptions
+            TemplateOptions = Enum.GetValues(typeof(TaskTemplateType)).Cast<TaskTemplateType>().ToList();
         }
 
-        public string Password
-        {
-            get => _password;
-            set { _password = value; OnPropertyChanged(); }
-        }
+        // Property for template options (for the Picker ItemsSource)
+        public List<TaskTemplateType> TemplateOptions { get; }
 
-        public string Email
-        {
-            get => _email;
-            set { _email = value; OnPropertyChanged(); }
-        }
-
+        // Property for the selected template
         public TaskTemplateType SelectedTemplate
         {
             get => _selectedTemplate;
@@ -56,42 +43,49 @@ namespace TransitionApp.ViewModel
         }
 
 
-        public SignUpViewModel(AuthService authService)
+        public async Task<bool> SignUpUserAsync(string username, string password, string email, TaskTemplateType selectedTemplate)
         {
-            _authService = authService;
-
-            // Load enum values into the ObservableCollection
-            Templates = new ObservableCollection<TaskTemplateType>(
-                Enum.GetValues(typeof(TaskTemplateType)).Cast<TaskTemplateType>()
-            );
-
-        }
-
-        // Command to handle sign-up logic
-
-        public async Task<bool> SignUpAsync()
-        {
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
-            {
-                return false; // Validation failed
-            }
-
-            // Create a new user object
+            // Create the new user
             var newUser = new User
             {
-                Username = Username,
-                PasswordHash = Password, // Ideally, hash the password
-                Email = Email,
-                TaskTemplate = SelectedTemplate
+                Username = username,
+                PasswordHash = password, // Store hashed password in production
+                Email = email,
+                TaskTemplate = selectedTemplate,
+                CreatedAt = DateTime.UtcNow
             };
 
-            // Use AuthService to save the user
-            return await _authService.RegisterUserAsync(newUser);
+            // Add the user to the database
+            var userAdded = await _authService.RegisterUserAsync(newUser);
+
+            if (!userAdded) return false;
+
+            // Retrieve tasks from the selected template
+            var templateTasks = await _taskService.GetTasksForTemplateAsync(selectedTemplate);
+
+            // Add template tasks to the user's task list
+            foreach (var templateTask in templateTasks)
+            {
+                var userTask = new UserTask
+                {
+                    TaskName = templateTask.Name,
+                    MonthsLeft = templateTask.MonthsLeft ?? 0,
+                    IsDone = false,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    UserId = newUser.UserId
+                };
+
+                await _taskService.AddTaskAsync(userTask);
+            }
+
+            return true;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        // INotifyPropertyChanged implementation
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

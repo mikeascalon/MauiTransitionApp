@@ -12,22 +12,28 @@
     <StackLayout Padding="20" Spacing="15">
 
         <!-- Username Field -->
-        <Entry Placeholder="Username"
-               Text="{Binding Username}" />
+        <Entry  x:Name="UsernameEntry"
+                Placeholder="Username"
+               Text="{Binding Username}"
+               Keyboard="Text"/>
 
         <!-- Password Field -->
-        <Entry Placeholder="Password"
+        <Entry x:Name="PasswordEntry"
+                Placeholder="Password"
                IsPassword="True"
                Text="{Binding Password}" />
 
         <!-- Email Field -->
-        <Entry Placeholder="Email"
+        <Entry x:Name="EmailEntry"
+                Placeholder="Email"
                Text="{Binding Email}" />
 
         <!-- Task Template Picker -->
-        <Picker Title="Select Template"
-                ItemsSource="{Binding Templates}"
-                SelectedItem="{Binding SelectedTemplate}" />
+        <Picker  x:Name="TemplatePicker"
+                Title="Select Template"
+                ItemsSource="{Binding TemplateOptions}"
+                SelectedItem="{Binding SelectedTemplate}" 
+                />
 
         <!-- Sign-Up Button -->
         <Button Text="Sign Up"
@@ -36,7 +42,8 @@
                 Clicked="OnSignUpClicked" />
 
         <!-- Error Message -->
-        <Label x:Name="ErrorMessage" 
+        <Label  
+                x:Name="ErrorMessage" 
                TextColor="Red" 
                IsVisible="False" />
     </StackLayout>
