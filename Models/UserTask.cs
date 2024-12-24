@@ -13,6 +13,7 @@ namespace TransitionApp.Models
         public int TaskId { get; set; } // Primary key
         public string TaskName { get; set; } = string.Empty; // Task name
         public int MonthsLeft { get; set; } // 24,18, 12, or 6
+        public string Description { get; set; } = string.Empty;
         public bool IsDone { get; set; } = false; // Completion status
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

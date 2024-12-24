@@ -25,6 +25,10 @@ namespace TransitionApp.View
 
             if (user != null && user.UserId > 0) // Ensure userId is valid
             {
+                // Hide the keyboard by unfocusing the Entry controls
+                UsernameEntry.Unfocus();
+                PasswordEntry.Unfocus();
+
                 // Navigate to TaskPage with only userId for existing user tasks
                 await Shell.Current.GoToAsync($"TaskPage?userId={user.UserId}");
             }

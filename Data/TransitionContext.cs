@@ -35,6 +35,10 @@ namespace TransitionApp.Data
                 entity.HasOne(ut => ut.User)
                       .WithMany(u => u.Tasks)
                       .HasForeignKey(ut => ut.UserId);
+
+                // Ensure Description is included
+                entity.Property(ut => ut.Description)
+                      .HasMaxLength(1000); // Optional: Add length constraint
             });
 
             // Configure Permission entity

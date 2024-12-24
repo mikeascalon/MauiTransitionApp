@@ -27,13 +27,23 @@
                             <Grid ColumnDefinitions="2*, Auto, Auto" RowSpacing="5">
 
                                 <!-- Task Name -->
-                                <Entry Text="{Binding TaskName, Mode=TwoWay}"
+                                <Label Text="{Binding TaskName, Mode=TwoWay}"
                                 FontSize="16"
                                 TextColor="#333333"
                                 VerticalOptions="Center"
                                 Grid.Column="0" />
 
-                                <!-- Edit Button -->
+                                <Button Text="Details"
+                                FontSize="12"
+                                TextColor="White"
+                                BackgroundColor="#007AFF"
+                                CornerRadius="5"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenTaskDetailsCommand}"
+                                CommandParameter="{Binding .}"
+                                HorizontalOptions="End"
+                                Grid.Column="1" />
+
+                                <!-- Edit Button --><!--
                                 <Button Text="Edit"
                                 FontSize="12"
                                 TextColor="White"
@@ -42,7 +52,7 @@
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.UpdateCommand}"
                                 CommandParameter="{Binding .}"
                                 HorizontalOptions="End"
-                                Grid.Column="1" />
+                                Grid.Column="1" />-->
 
                                 <!-- Delete Button -->
                                 <Button Text="Delete"

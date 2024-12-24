@@ -9,19 +9,25 @@
     Title="TransitionApp">
 
     <ShellContent
-        Title="Sign In"
+        Title="Welcome to TAP Mobile"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
     <!-- Route for the Task Page -->
     <ShellContent
-        Title="Task Page"
+        Title="TAP Checklist"
         ContentTemplate="{DataTemplate local:TaskPage}"
         Route="TaskPage" />
 
     <ShellContent 
-        Title="Sign Up" 
+        Title="Sign up for new account" 
         ContentTemplate="{DataTemplate local:SignUpPage}" 
         Route="SignUpPage" />
+
+    <ShellContent 
+        Title="Task Details"
+        Route="TaskDetailsPage" 
+        ContentTemplate="{DataTemplate local:TaskDetailsPage}" />
+
 
 </Shell>

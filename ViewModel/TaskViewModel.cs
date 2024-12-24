@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TransitionApp.Models;
 using TransitionApp.Services;
+using TransitionApp.View;
 
 
 namespace TransitionApp.ViewModel
@@ -18,8 +19,10 @@ namespace TransitionApp.ViewModel
         private readonly TaskService _taskService;
         private int _currentUserId; // Pass the UserId dynamically
         private TaskTemplateType _currentTemplateType;
-        public ICommand UpdateCommand { get; }
+        //public ICommand UpdateCommand { get; }
         public ICommand DeleteCommand { get; }
+
+        public ICommand OpenTaskDetailsCommand { get; }
 
         public ObservableCollection<UserTask> Tasks { get; set; } = new ObservableCollection<UserTask>();
 
@@ -27,8 +30,10 @@ namespace TransitionApp.ViewModel
         {
             _taskService = taskService;
 
-            UpdateCommand = new Command<UserTask>(async (task) => await UpdateTask(task));
+            //UpdateCommand = new Command<UserTask>(async (task) => await UpdateTask(task));
             DeleteCommand = new Command<int>(async (taskId) => await DeleteTask(taskId));
+
+            OpenTaskDetailsCommand = new Command<UserTask>(async (task) => await OpenTaskDetailsAsync(task));
 
         }
 
@@ -103,6 +108,14 @@ namespace TransitionApp.ViewModel
 
             // Reload user tasks after deletion
             await LoadUserTasksAsync(_currentUserId);
+        }
+
+        private async Task OpenTaskDetailsAsync(UserTask task)
+        {
+            if (task != null)
+            {
+                await Shell.Current.Navigation.PushModalAsync(new TaskDetailsPage(task, _taskService));
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

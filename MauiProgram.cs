@@ -37,7 +37,7 @@ namespace TransitionApp
             builder.Services.AddScoped<SignUpViewModel>();
             builder.Services.AddTransient<SignUpPage>();
 
-            // Automatically apply migrations
+            
             try
             {
                 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
