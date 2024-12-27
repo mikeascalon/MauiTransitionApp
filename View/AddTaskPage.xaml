@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TransitionApp.View.AddTaskPage"
+             Title="Add New Task">
+    <StackLayout Padding="20" Spacing="15">
+        <Label Text="Enter Task Details" FontSize="Large" HorizontalOptions="Center" />
+
+        <!-- Task Name -->
+        <Label Text="Task Name" FontSize="Medium" />
+        <Entry Text="{Binding TaskName}" Placeholder="Enter task name" />
+
+        <!-- Months Left -->
+        <Label Text="Start task if you have __ months left" FontSize="Medium" />
+        <Entry Text="{Binding MonthsLeft}" Placeholder="Enter months left" Keyboard="Numeric" />
+
+        <!-- Save Button -->
+        <Button Text="Save Task"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                Command="{Binding SaveCommand}" />
+    </StackLayout>
+</ContentPage>

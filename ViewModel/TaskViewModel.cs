@@ -19,10 +19,13 @@ namespace TransitionApp.ViewModel
         private readonly TaskService _taskService;
         private int _currentUserId; // Pass the UserId dynamically
         private TaskTemplateType _currentTemplateType;
-        //public ICommand UpdateCommand { get; }
-        public ICommand DeleteCommand { get; }
 
+
+        
+        public ICommand DeleteCommand { get; }
+        public ICommand AddCommand { get; }
         public ICommand OpenTaskDetailsCommand { get; }
+
 
         public ObservableCollection<UserTask> Tasks { get; set; } = new ObservableCollection<UserTask>();
 
@@ -30,11 +33,10 @@ namespace TransitionApp.ViewModel
         {
             _taskService = taskService;
 
-            //UpdateCommand = new Command<UserTask>(async (task) => await UpdateTask(task));
+            
             DeleteCommand = new Command<int>(async (taskId) => await DeleteTask(taskId));
-
+            AddCommand = new Command(async () => await OpenAddTaskModal());
             OpenTaskDetailsCommand = new Command<UserTask>(async (task) => await OpenTaskDetailsAsync(task));
-
         }
 
         public async Task SetUserId(int userId)
@@ -76,13 +78,14 @@ namespace TransitionApp.ViewModel
             OnPropertyChanged(nameof(Tasks));
         }
 
-        public async Task AddTask(UserTask task)
+        private async Task OpenAddTaskModal()
         {
-            task.UserId = _currentUserId; // Assign current user
-            await _taskService.AddTaskAsync(task);
+            var addTaskViewModel = new AddTaskViewModel(_taskService, _currentUserId);
+            var addTaskPage = new AddTaskPage { BindingContext = addTaskViewModel };
 
-            // Reload user tasks after adding
-            await LoadUserTasksAsync(_currentUserId);
+            await Shell.Current.Navigation.PushModalAsync(addTaskPage);
+
+            
         }
 
         public async Task UpdateTask(UserTask task)
@@ -107,7 +110,7 @@ namespace TransitionApp.ViewModel
             await _taskService.DeleteTaskAsync(taskId);
 
             // Reload user tasks after deletion
-            await LoadUserTasksAsync(_currentUserId);
+            await ReloadTasksAsync();
         }
 
         private async Task OpenTaskDetailsAsync(UserTask task)
@@ -115,8 +118,23 @@ namespace TransitionApp.ViewModel
             if (task != null)
             {
                 await Shell.Current.Navigation.PushModalAsync(new TaskDetailsPage(task, _taskService));
+                await ReloadTasksAsync();
             }
         }
+
+        public async Task ReloadTasksAsync()
+        {
+            var tasks = await _taskService.GetTasksByUserAsync(_currentUserId);
+            Tasks.Clear(); // Clear the existing list
+
+            foreach (var task in tasks)
+            {
+                Tasks.Add(task); // Add the updated tasks
+            }
+
+            OnPropertyChanged(nameof(Tasks));
+        }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

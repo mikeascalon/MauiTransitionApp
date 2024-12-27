@@ -18,14 +18,14 @@ namespace TransitionApp.ViewModel
 
         public UserTask _task;
 
-        public ICommand SaveCommand { get; }
+        public ICommand SaveTaskCommand { get; }
 
         public TaskDetailsViewModel(UserTask task, TaskService taskService)
         {
             Task = task;
             _taskService = taskService;
 
-            
+            SaveTaskCommand = new Command(async () => await SaveTaskAsync());
         }
 
         public UserTask Task
@@ -41,6 +41,8 @@ namespace TransitionApp.ViewModel
         public async Task SaveTaskAsync()
         {
             await _taskService.UpdateTaskAsync(Task);
+
+            await Shell.Current.Navigation.PopModalAsync();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -27,7 +27,12 @@
     <ShellContent 
         Title="Task Details"
         Route="TaskDetailsPage" 
-        ContentTemplate="{DataTemplate local:TaskDetailsPage}" />
+        ContentTemplate="{DataTemplate local:TaskDetailsPage}"  />
+
+    <ShellContent 
+        Title="Add Task" 
+        Route="AddTaskPage"
+        ContentTemplate="{DataTemplate local:AddTaskPage}"  /> 
 
 
 </Shell>

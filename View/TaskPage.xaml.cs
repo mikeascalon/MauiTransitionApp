@@ -68,4 +68,15 @@ public partial class TaskPage : ContentPage
             _taskViewModel.LoadTemplateTasks(templateType);
         }
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (_taskViewModel != null)
+        {
+            // Reload the tasks
+            _ = _taskViewModel.ReloadTasksAsync();
+        }
+    }
 }
