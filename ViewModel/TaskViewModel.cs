@@ -12,6 +12,7 @@ using TransitionApp.Services;
 using TransitionApp.View;
 
 
+
 namespace TransitionApp.ViewModel
 {
     public class TaskViewModel: INotifyPropertyChanged
@@ -28,6 +29,7 @@ namespace TransitionApp.ViewModel
 
 
         public ObservableCollection<UserTask> Tasks { get; set; } = new ObservableCollection<UserTask>();
+        public ObservableCollection<IGrouping<int, UserTask>> GroupedTasks { get; set; } = new ObservableCollection<IGrouping<int, UserTask>>();
 
         public TaskViewModel(TaskService taskService)
         {
@@ -125,14 +127,25 @@ namespace TransitionApp.ViewModel
         public async Task ReloadTasksAsync()
         {
             var tasks = await _taskService.GetTasksByUserAsync(_currentUserId);
-            Tasks.Clear(); // Clear the existing list
-
+            Tasks.Clear();
             foreach (var task in tasks)
             {
-                Tasks.Add(task); // Add the updated tasks
+                Tasks.Add(task);
+            }
+
+            // Group tasks by MonthsLeft
+            var grouped = tasks
+                .GroupBy(t => t.MonthsLeft)
+                .OrderByDescending(group => group.Key)
+                .ToList(); 
+            GroupedTasks.Clear();
+            foreach (var group in grouped)
+            {
+                GroupedTasks.Add(group);
             }
 
             OnPropertyChanged(nameof(Tasks));
+            OnPropertyChanged(nameof(GroupedTasks));
         }
 
 
