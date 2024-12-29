@@ -52,15 +52,31 @@ namespace TransitionApp.ViewModel
         {
             _currentUserId = userId;
 
+            // Fetch tasks for the current user
             var userTasks = await _taskService.GetTasksByUserAsync(userId);
             Tasks.Clear();
-
             foreach (var task in userTasks)
             {
                 Tasks.Add(task);
             }
 
+            // Group tasks by MonthsLeft for UI grouping
+            var grouped = userTasks
+                .GroupBy(t => t.MonthsLeft)
+                .OrderByDescending(group => group.Key)
+                .ToList();
+
+            GroupedTasks.Clear();
+            foreach (var group in grouped)
+            {
+                GroupedTasks.Add(group);
+            }
+
+            // Notify the UI about changes
             OnPropertyChanged(nameof(Tasks));
+            OnPropertyChanged(nameof(GroupedTasks));
+
+            
         }
 
 

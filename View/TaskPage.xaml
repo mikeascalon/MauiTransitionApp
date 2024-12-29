@@ -10,7 +10,7 @@
         <StackLayout Padding="15" Spacing="10" BackgroundColor="#F5F5F5" HorizontalOptions="FillAndExpand">
 
             <!-- Header -->
-            <Label Text="Tasks"
+            <Label Text="Task by Months left"
                    FontSize="24"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
@@ -23,7 +23,13 @@
                         <toolkit:Expander HorizontalOptions="FillAndExpand">
                             <!-- Header -->
                             <toolkit:Expander.Header>
-                                <Label Text="{Binding Key}" FontSize="18" FontAttributes="Bold" />
+                                <Frame BackgroundColor="Orange" CornerRadius="8" Padding="5" Margin="0,5" HorizontalOptions="End">
+                                    <Label Text="{Binding Key}" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold" 
+                                           TextColor="White" 
+                                           HorizontalTextAlignment="Center" />
+                                </Frame>
                             </toolkit:Expander.Header>
 
                             <!-- Content -->
