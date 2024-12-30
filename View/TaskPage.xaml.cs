@@ -79,4 +79,6 @@ public partial class TaskPage : ContentPage
             _ = _taskViewModel.ReloadTasksAsync();
         }
     }
+
+   
 }

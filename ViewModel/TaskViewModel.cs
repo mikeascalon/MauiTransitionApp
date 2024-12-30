@@ -168,9 +168,11 @@ namespace TransitionApp.ViewModel
 
         private async Task SignOutAsync()
         {
-            // Navigate back to the main page
+            // Navigate back to MainPage
             await Shell.Current.GoToAsync("//MainPage");
         }
+
+
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
