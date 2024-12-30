@@ -30,7 +30,7 @@
                    FontSize="24"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
-                   TextColor="#333333" />
+                   TextColor="Orange" />
 
             <!-- Expanders for Grouped Tasks -->
             <CollectionView ItemsSource="{Binding GroupedTasks}" HorizontalOptions="FillAndExpand">
