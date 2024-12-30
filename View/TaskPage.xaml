@@ -65,10 +65,18 @@
                                                 <Grid ColumnDefinitions="2*, Auto, Auto" RowSpacing="5" HorizontalOptions="FillAndExpand">
                                                     <!-- Task Name -->
                                                     <Label Text="{Binding TaskName, Mode=TwoWay}"
-                                                           FontSize="16"
-                                                           TextColor="#333333"
-                                                           VerticalOptions="Center"
-                                                           Grid.Column="0" />
+                                                               FontSize="16"
+                                                               TextColor="#333333"
+                                                               VerticalOptions="Center"
+                                                               Grid.Column="0">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding IsDone}" Value="True">
+                                                                <Setter Property="TextDecorations" Value="Strikethrough" />
+                                                                <Setter Property="TextColor" Value="Gray" />
+                                                                <!-- Optional: Change color to indicate completion -->
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
 
                                                     <!-- Details Button -->
                                                     <Button Text="Details"
