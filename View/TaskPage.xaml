@@ -4,12 +4,28 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:TransitionApp.ViewModel"
              x:Class="TransitionApp.View.TaskPage"
-             Title="Task Page">
+             BackgroundColor="#333333">
 
     <ScrollView>
-        <StackLayout Padding="15" Spacing="10" BackgroundColor="#F5F5F5" HorizontalOptions="FillAndExpand">
+        <StackLayout Padding="15" Spacing="10" BackgroundColor="#333333" HorizontalOptions="FillAndExpand">
 
-            <!-- Header -->
+            <!-- Header Image -->
+            <Image Source="headerlogo.png" 
+               HeightRequest="150" 
+               Aspect="AspectFill"
+               HorizontalOptions="FillAndExpand" />
+
+            <!-- Sign Out Button -->
+            <Button Text="Sign Out"
+                FontSize="16"
+                TextColor="White"
+                BackgroundColor="#FF3B30"
+                CornerRadius="8"
+                Command="{Binding SignOutCommand}"
+                HorizontalOptions="End"
+                Margin="0,0,15,10" />
+
+                <!-- Header -->
             <Label Text="Task by Months left"
                    FontSize="24"
                    FontAttributes="Bold"
@@ -23,13 +39,18 @@
                         <toolkit:Expander HorizontalOptions="FillAndExpand">
                             <!-- Header -->
                             <toolkit:Expander.Header>
-                                <Frame BackgroundColor="Orange" CornerRadius="8" Padding="5" Margin="0,5" HorizontalOptions="End">
+                                <Frame BackgroundColor="Orange" 
+                                       CornerRadius="8" 
+                                       Padding="5" 
+                                       Margin="5,5" 
+                                       HorizontalOptions="FillAndExpand">
                                     <Label Text="{Binding Key}" 
-                                           FontSize="18" 
-                                           FontAttributes="Bold" 
-                                           TextColor="White" 
-                                           HorizontalTextAlignment="Center" />
+                                       FontSize="18" 
+                                       FontAttributes="Bold" 
+                                       TextColor="White" 
+                                       VerticalOptions="Center" />
                                 </Frame>
+                                
                             </toolkit:Expander.Header>
 
                             <!-- Content -->

@@ -26,6 +26,7 @@ namespace TransitionApp.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand OpenTaskDetailsCommand { get; }
+        public ICommand SignOutCommand { get; }
 
 
         public ObservableCollection<UserTask> Tasks { get; set; } = new ObservableCollection<UserTask>();
@@ -39,6 +40,7 @@ namespace TransitionApp.ViewModel
             DeleteCommand = new Command<int>(async (taskId) => await DeleteTask(taskId));
             AddCommand = new Command(async () => await OpenAddTaskModal());
             OpenTaskDetailsCommand = new Command<UserTask>(async (task) => await OpenTaskDetailsAsync(task));
+            SignOutCommand = new Command(async () => await SignOutAsync());
         }
 
         public async Task SetUserId(int userId)
@@ -162,6 +164,12 @@ namespace TransitionApp.ViewModel
 
             OnPropertyChanged(nameof(Tasks));
             OnPropertyChanged(nameof(GroupedTasks));
+        }
+
+        private async Task SignOutAsync()
+        {
+            // Navigate back to the main page
+            await Shell.Current.GoToAsync("//MainPage");
         }
 
 
