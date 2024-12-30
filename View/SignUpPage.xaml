@@ -6,45 +6,89 @@
              x:Class="TransitionApp.View.SignUpPage"
              Title="SignUpPage">
 
-    
+    <!-- Page Background -->
+    <ContentPage.Background>
+        <LinearGradientBrush EndPoint="0,1">
+            <GradientStop Color="#4A4A4A" Offset="0.0" />
+            <GradientStop Color="#2F2F2F" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
 
 
     <StackLayout Padding="20" Spacing="15">
 
+        <Image Source="headerlogo.png" 
+                HeightRequest="150" 
+                Aspect="AspectFill"
+                HorizontalOptions="FillAndExpand" />
+
+        <!-- Page Title -->
+        <Label Text="Create Your Account"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="Orange"
+                   Margin="0,0,0,20" />
+
         <!-- Username Field -->
-        <Entry  x:Name="UsernameEntry"
-                Placeholder="Username"
-               Text="{Binding Username}"
-               Keyboard="Text"/>
+        <Frame BackgroundColor="White"
+                   CornerRadius="8"
+                   Padding="10"
+                   HasShadow="True">
+            <Entry     x:Name="UsernameEntry"
+                       Placeholder="Username"
+                       Text="{Binding Username}"
+                       Keyboard="Text" />
+        </Frame>
 
         <!-- Password Field -->
-        <Entry x:Name="PasswordEntry"
-                Placeholder="Password"
-               IsPassword="True"
-               Text="{Binding Password}" />
+        <Frame BackgroundColor="White"
+                   CornerRadius="8"
+                   Padding="10"
+                   HasShadow="True">
+            <Entry     x:Name="PasswordEntry"
+                       Placeholder="Password"
+                       IsPassword="True"
+                       Text="{Binding Password}" />
+        </Frame>
 
         <!-- Email Field -->
-        <Entry x:Name="EmailEntry"
-                Placeholder="Email"
-               Text="{Binding Email}" />
+        <Frame BackgroundColor="White"
+                   CornerRadius="8"
+                   Padding="10"
+                   HasShadow="True">
+            <Entry     x:Name="EmailEntry"
+                       Placeholder="Email"
+                       Text="{Binding Email}" />
+        </Frame>
 
         <!-- Task Template Picker -->
-        <Picker  x:Name="TemplatePicker"
-                Title="Select Template"
-                ItemsSource="{Binding TemplateOptions}"
-                SelectedItem="{Binding SelectedTemplate}" 
-                />
+        <Frame BackgroundColor="White"
+                   CornerRadius="8"
+                   Padding="10"
+                   HasShadow="True">
+            <Picker     x:Name="TemplatePicker"
+                        Title="Select Template"
+                        ItemsSource="{Binding TemplateOptions}"
+                        SelectedItem="{Binding SelectedTemplate}" />
+        </Frame>
 
         <!-- Sign-Up Button -->
         <Button Text="Sign Up"
-                BackgroundColor="#34C759"
-                TextColor="White"
-                Clicked="OnSignUpClicked" />
+                    BackgroundColor="#34C759"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Clicked="OnSignUpClicked"
+                    FontSize="16"
+                    HeightRequest="50" />
 
         <!-- Error Message -->
-        <Label  
-                x:Name="ErrorMessage" 
-               TextColor="Red" 
-               IsVisible="False" />
+        <Label x:Name="ErrorMessage"
+                   TextColor="Red"
+                   FontSize="14"
+                   IsVisible="False"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,0" />
     </StackLayout>
 </ContentPage>
