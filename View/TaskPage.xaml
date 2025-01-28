@@ -1,86 +1,125 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-              xmlns:vm="clr-namespace:TransitionApp.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:TransitionApp.ViewModel"
              x:Class="TransitionApp.View.TaskPage"
-             Title="Task Page">
-
+             BackgroundColor="#333333">
 
     <ScrollView>
-        <StackLayout Padding="15" Spacing="10" BackgroundColor="#F5F5F5">
+        <StackLayout Padding="15" Spacing="10" BackgroundColor="#333333" HorizontalOptions="FillAndExpand">
 
-            <!-- Header -->
-            <Label Text="Tasks"
-           FontSize="24"
-           FontAttributes="Bold"
-           HorizontalOptions="Center"
-           TextColor="#333333" />
+            <!-- Header Image -->
+            <Image Source="headerlogo.png" 
+               HeightRequest="150" 
+               Aspect="AspectFill"
+               HorizontalOptions="FillAndExpand" />
 
-            <!-- Task List -->
-            <CollectionView ItemsSource="{Binding Tasks}" BackgroundColor="White">
+            <!-- Sign Out Button -->
+            <Button Text="Sign Out"
+                FontSize="16"
+                TextColor="White"
+                BackgroundColor="#FF3B30"
+                CornerRadius="8"
+                Command="{Binding SignOutCommand}"
+                HorizontalOptions="End"
+                Margin="0,0,15,10" />
+
+                <!-- Header -->
+            <Label Text="Task by Months left"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="Orange" />
+
+            <!-- Expanders for Grouped Tasks -->
+            <CollectionView ItemsSource="{Binding GroupedTasks}" HorizontalOptions="FillAndExpand">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame CornerRadius="8" Margin="5" Padding="10" BackgroundColor="#FFFFFF" >
-                            <Frame.Shadow>
-                                <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
-                            </Frame.Shadow>
-                            <Grid ColumnDefinitions="2*, Auto, Auto" RowSpacing="5">
+                        <toolkit:Expander HorizontalOptions="FillAndExpand">
+                            <!-- Header -->
+                            <toolkit:Expander.Header>
+                                <Frame BackgroundColor="Orange" 
+                                       CornerRadius="8" 
+                                       Padding="5" 
+                                       Margin="5,5" 
+                                       HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding Key}" 
+                                       FontSize="18" 
+                                       FontAttributes="Bold" 
+                                       TextColor="White" 
+                                       VerticalOptions="Center" />
+                                </Frame>
+                                
+                            </toolkit:Expander.Header>
 
-                                <!-- Task Name -->
-                                <Label Text="{Binding TaskName, Mode=TwoWay}"
-                                FontSize="16"
-                                TextColor="#333333"
-                                VerticalOptions="Center"
-                                Grid.Column="0" />
+                            <!-- Content -->
+                            <toolkit:Expander.Content>
+                                <CollectionView ItemsSource="{Binding}" HorizontalOptions="FillAndExpand">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Frame CornerRadius="8" Margin="5" Padding="10" BackgroundColor="#FFFFFF" HorizontalOptions="FillAndExpand">
+                                                <Frame.Shadow>
+                                                    <Shadow Brush="Black" Opacity="0.5" Offset="5,5" />
+                                                </Frame.Shadow>
+                                                <Grid ColumnDefinitions="2*, Auto, Auto" RowSpacing="5" HorizontalOptions="FillAndExpand">
+                                                    <!-- Task Name -->
+                                                    <Label Text="{Binding TaskName, Mode=TwoWay}"
+                                                               FontSize="16"
+                                                               TextColor="#333333"
+                                                               VerticalOptions="Center"
+                                                               Grid.Column="0">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding IsDone}" Value="True">
+                                                                <Setter Property="TextDecorations" Value="Strikethrough" />
+                                                                <Setter Property="TextColor" Value="Gray" />
+                                                                <!-- Optional: Change color to indicate completion -->
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
 
-                                <Button Text="Details"
-                                FontSize="12"
-                                TextColor="White"
-                                BackgroundColor="#007AFF"
-                                CornerRadius="5"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenTaskDetailsCommand}"
-                                CommandParameter="{Binding .}"
-                                HorizontalOptions="End"
-                                Grid.Column="1" />
+                                                    <!-- Details Button -->
+                                                    <Button Text="Details"
+                                                            FontSize="12"
+                                                            TextColor="White"
+                                                            BackgroundColor="#007AFF"
+                                                            CornerRadius="5"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenTaskDetailsCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            HorizontalOptions="End"
+                                                            Grid.Column="1" />
 
-                                <!-- Edit Button --><!--
-                                <Button Text="Edit"
-                                FontSize="12"
-                                TextColor="White"
-                                BackgroundColor="#007AFF"
-                                CornerRadius="5"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.UpdateCommand}"
-                                CommandParameter="{Binding .}"
-                                HorizontalOptions="End"
-                                Grid.Column="1" />-->
-
-                                <!-- Delete Button -->
-                                <Button Text="Delete"
-                                FontSize="12"
-                                TextColor="White"
-                                BackgroundColor="#FF3B30"
-                                CornerRadius="5"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
-                                CommandParameter="{Binding TaskId}"
-                                HorizontalOptions="End"
-                                Grid.Column="2" />
-                            </Grid>
-                        </Frame>
+                                                    <!-- Delete Button -->
+                                                    <Button Text="Delete"
+                                                            FontSize="12"
+                                                            TextColor="White"
+                                                            BackgroundColor="#FF3B30"
+                                                            CornerRadius="5"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
+                                                            CommandParameter="{Binding TaskId}"
+                                                            HorizontalOptions="End"
+                                                            Grid.Column="2" />
+                                                </Grid>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </toolkit:Expander.Content>
+                        </toolkit:Expander>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
             <!-- Add Task Button -->
             <Button Text="Add Task"
-            FontSize="16"
-            TextColor="White"
-            BackgroundColor="#34C759"
-            CornerRadius="8"
-            Command="{Binding AddCommand}"
-            HorizontalOptions="Center"
-            Padding="10" />
+                    FontSize="16"
+                    TextColor="White"
+                    BackgroundColor="#34C759"
+                    CornerRadius="8"
+                    Command="{Binding AddCommand}"
+                    HorizontalOptions="Center"
+                    Padding="10" />
         </StackLayout>
     </ScrollView>
 
-    
 </ContentPage>

@@ -5,6 +5,9 @@ using TransitionApp.Data;
 using TransitionApp.Services;
 using TransitionApp.ViewModel;
 using TransitionApp.View;
+using CommunityToolkit.Maui;
+
+
 
 namespace TransitionApp
 {
@@ -17,11 +20,14 @@ namespace TransitionApp
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            
 
             // Add DbContext with SQL Server connection string
             builder.Services.AddDbContext<TransitionContext>(options =>

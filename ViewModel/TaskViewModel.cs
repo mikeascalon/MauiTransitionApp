@@ -12,6 +12,7 @@ using TransitionApp.Services;
 using TransitionApp.View;
 
 
+
 namespace TransitionApp.ViewModel
 {
     public class TaskViewModel: INotifyPropertyChanged
@@ -25,9 +26,11 @@ namespace TransitionApp.ViewModel
         public ICommand DeleteCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand OpenTaskDetailsCommand { get; }
+        public ICommand SignOutCommand { get; }
 
 
         public ObservableCollection<UserTask> Tasks { get; set; } = new ObservableCollection<UserTask>();
+        public ObservableCollection<IGrouping<int, UserTask>> GroupedTasks { get; set; } = new ObservableCollection<IGrouping<int, UserTask>>();
 
         public TaskViewModel(TaskService taskService)
         {
@@ -37,6 +40,7 @@ namespace TransitionApp.ViewModel
             DeleteCommand = new Command<int>(async (taskId) => await DeleteTask(taskId));
             AddCommand = new Command(async () => await OpenAddTaskModal());
             OpenTaskDetailsCommand = new Command<UserTask>(async (task) => await OpenTaskDetailsAsync(task));
+            SignOutCommand = new Command(async () => await SignOutAsync());
         }
 
         public async Task SetUserId(int userId)
@@ -50,15 +54,31 @@ namespace TransitionApp.ViewModel
         {
             _currentUserId = userId;
 
+            // Fetch tasks for the current user
             var userTasks = await _taskService.GetTasksByUserAsync(userId);
             Tasks.Clear();
-
             foreach (var task in userTasks)
             {
                 Tasks.Add(task);
             }
 
+            // Group tasks by MonthsLeft for UI grouping
+            var grouped = userTasks
+                .GroupBy(t => t.MonthsLeft)
+                .OrderByDescending(group => group.Key)
+                .ToList();
+
+            GroupedTasks.Clear();
+            foreach (var group in grouped)
+            {
+                GroupedTasks.Add(group);
+            }
+
+            // Notify the UI about changes
             OnPropertyChanged(nameof(Tasks));
+            OnPropertyChanged(nameof(GroupedTasks));
+
+            
         }
 
 
@@ -125,15 +145,34 @@ namespace TransitionApp.ViewModel
         public async Task ReloadTasksAsync()
         {
             var tasks = await _taskService.GetTasksByUserAsync(_currentUserId);
-            Tasks.Clear(); // Clear the existing list
-
+            Tasks.Clear();
             foreach (var task in tasks)
             {
-                Tasks.Add(task); // Add the updated tasks
+                Tasks.Add(task);
+            }
+
+            // Group tasks by MonthsLeft
+            var grouped = tasks
+                .GroupBy(t => t.MonthsLeft)
+                .OrderByDescending(group => group.Key)
+                .ToList(); 
+            GroupedTasks.Clear();
+            foreach (var group in grouped)
+            {
+                GroupedTasks.Add(group);
             }
 
             OnPropertyChanged(nameof(Tasks));
+            OnPropertyChanged(nameof(GroupedTasks));
         }
+
+        private async Task SignOutAsync()
+        {
+            // Navigate back to MainPage
+            await Shell.Current.GoToAsync("//MainPage");
+        }
+
+
 
 
         public event PropertyChangedEventHandler? PropertyChanged;

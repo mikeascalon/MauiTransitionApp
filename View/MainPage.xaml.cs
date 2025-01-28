@@ -43,6 +43,21 @@ namespace TransitionApp.View
         {
             await Shell.Current.GoToAsync("///SignUpPage");
         }
+
+        
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Clear the Username and Password fields
+            UsernameEntry.Text = string.Empty;
+            PasswordEntry.Text = string.Empty;
+
+            // Hide any error messages
+            ErrorMessage.IsVisible = false;
+        }
+
+
     }
 
 }
