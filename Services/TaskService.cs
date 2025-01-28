@@ -40,11 +40,9 @@ namespace TransitionApp.Services
         // Get all tasks for a specific user
         public async Task<List<UserTask>> GetTasksByUserAsync(int userId)
         {
-            Console.WriteLine($"Fetching tasks for UserId: {userId}");
-
+            
             var tasks = await _context.Tasks.Where(t => t.UserId == userId).ToListAsync();
 
-            Console.WriteLine($"Tasks fetched: {tasks.Count}");
             return tasks;
         }
 
@@ -98,11 +96,7 @@ namespace TransitionApp.Services
                                  .ToListAsync();
         }
 
-        // Fetch all templates if needed
-        public async Task<List<TaskTemplate>> GetAllTemplatesAsync()
-        {
-            return await _context.TaskTemplates.OrderBy(t => t.Order).ToListAsync();
-        }
+
 
         // Retrieve all tasks for a specific user
         public async Task<List<UserTask>> GetTasksForUserAsync(int userId)

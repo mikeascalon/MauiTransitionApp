@@ -44,7 +44,7 @@ namespace TransitionApp.View
             await Shell.Current.GoToAsync("///SignUpPage");
         }
 
-        // Clear the textboxes when the MainPage is loaded
+        
         protected override void OnAppearing()
         {
             base.OnAppearing();
